@@ -25,7 +25,8 @@ RUN pip install --no-cache-dir .
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
-ENV CLAUDE_CONFIG_DIR=/data/claude
+# Pointe vers le répertoire où les logs Claude sont montés depuis l'hôte
+ENV CLAUDE_CONFIG_DIR=/root/.claude
 
 # Expose port
 EXPOSE 8383

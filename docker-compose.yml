@@ -9,13 +9,13 @@ services:
     ports:
       - "8383:8383"
     volumes:
-      # Volume persistant pour les données ccusage
+      # Volume persistant pour les données de l'API (cache, etc.)
       - ./data:/data/claude
       # Volume pour accéder aux logs Claude Code depuis la machine hôte
       # Linux : ~/.claude ou ~/.config/Claude
       # macOS : ~/Library/Application Support/Claude
       # Windows : %APPDATA%/Claude
-      - ${CLAUDE_CONFIG_DIR:-~/.claude}:/root/.claude:ro
+      - ${HOST_CLAUDE_DIR:-~/.claude}:/root/.claude:ro
     env_file:
       - .env
     restart: unless-stopped
