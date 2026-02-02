@@ -1,7 +1,7 @@
 services:
   claude-usage-api:
     build:
-      context: .
+      context: ./api
       dockerfile: Dockerfile
     container_name: claude-usage-api
     ports:
@@ -15,7 +15,7 @@ services:
       # Windows : %APPDATA%/Claude
       - ${HOST_CLAUDE_DIR:-~/.claude}:/root/.claude:ro
     env_file:
-      - .env
+      - ./api/.env
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:8383/health"]

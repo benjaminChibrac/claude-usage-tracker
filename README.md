@@ -1,41 +1,46 @@
-# Claude Usage API
+# Claude Usage Tracker - Monorepo
 
-API REST légère exposant les métriques d'utilisation Claude Code en temps réel.
+This repository contains:
+- **api/** - FastAPI service for Claude usage metrics
+- **custom_components/** - Home Assistant custom integration (HACS-compatible)
 
-## Démarrage rapide
+## Quick Start
+
+### API
+
+See [api/README.md](api/README.md) for detailed API documentation.
 
 ```bash
-# Installation
-cd /srv/dev-disk-by-uuid-f89e7c5f-bec7-477f-b5ca-85ffc4645dd1/RPI_DATA/claude-usage
+cd api
 pip install -e .
-
-# Configuration
-cp .env.example .env
-# Éditer .env selon vos besoins
-
-# Démarrage
-uvicorn claude_usage_api.main:app --reload
+uvicorn claude_usage_api.main:app --reload --port 8383
 ```
 
-## Endpoints
+### Home Assistant Integration
 
-- `GET /health` - Health check
-- `GET /usage` - État complet de consommation
-- `GET /usage/session` - Session uniquement
-- `GET /usage/weekly` - Hebdomadaire uniquement
-- `GET /config` - Configuration actuelle
-- `POST /cache/invalidate` - Forcer le rafraîchissement du cache
+See [custom_components/claude_usage/README.md](custom_components/claude_usage/README.md) for installation instructions.
 
-## Configuration
+## Docker Deployment
 
-Variables d'environnement (.env):
-- `CLAUDE_PLAN` : Plan Claude (pro, max_5x, max_20x)
-- `SESSION_LIMIT_USD` : Limite de session en USD (optionnel)
-- `WEEKLY_LIMIT_USD` : Limite hebdomadaire en USD (optionnel)
-- `CACHE_TTL_SECONDS` : TTL du cache en secondes (défaut: 60)
-- `API_KEY` : Clé API pour authentification (optionnel)
-- `HOST` / `PORT` : Configuration serveur
+From the repository root:
 
-## Prérequis
+```bash
+# Configure environment
+cp api/.env.example api/.env
+# Edit api/.env according to your needs
 
-- `ccusage` doit être installé : `npm install -g ccusage`
+# Start services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+## Prerequisites
+
+- Python 3.9+
+- `ccusage` CLI tool: `npm install -g ccusage`
+- Docker & Docker Compose (for containerized deployment)

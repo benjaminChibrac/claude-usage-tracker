@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Claude Usage API** is a FastAPI-based REST service that exposes Claude Code usage metrics by wrapping the `ccusage` CLI tool. It provides real-time tracking of session and weekly consumption with budget limit monitoring across different Claude plans (Pro, Max 5x, Max 20x).
+This is a **monorepo** containing:
+1. **API** (`api/`) - FastAPI-based REST service that exposes Claude Code usage metrics by wrapping the `ccusage` CLI tool
+2. **Home Assistant Integration** (`custom_components/`) - HACS-compatible custom component (coming soon)
 
 **Key Technologies:**
 - Python 3.9+ with FastAPI + Uvicorn
@@ -17,6 +19,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Local Development
 
 ```bash
+# Navigate to API directory
+cd api
+
 # Install in editable mode
 pip install -e .
 
@@ -33,6 +38,9 @@ python -m uvicorn claude_usage_api.main:app --host 0.0.0.0 --port 8383
 ### Testing
 
 ```bash
+# From api/ directory
+cd api
+
 # Run all tests
 pytest
 
@@ -52,10 +60,12 @@ pytest --cov=claude_usage_api
 ### Docker
 
 ```bash
-# Build the image
-docker build -t claude-usage-api .
+# From repository root
 
-# Run with docker-compose
+# Build the image (context is ./api)
+docker build -t claude-usage-api ./api
+
+# Run with docker-compose (from repository root)
 docker-compose up -d
 
 # View logs
@@ -109,10 +119,11 @@ npm install -g ccusage
 
 ### Critical Files
 
-- `src/claude_usage_api/usage_service.py`: Core business logic, ccusage parsing, projection calculations
-- `src/claude_usage_api/config.py`: Plan presets, model limits, calibration factor
-- `src/claude_usage_api/main.py`: FastAPI routes and API key authentication
-- `Dockerfile`: Multi-stage build combining Node.js (ccusage) + Python runtime
+- `api/src/claude_usage_api/usage_service.py`: Core business logic, ccusage parsing, projection calculations
+- `api/src/claude_usage_api/config.py`: Plan presets, model limits, calibration factor
+- `api/src/claude_usage_api/main.py`: FastAPI routes and API key authentication
+- `api/Dockerfile`: Multi-stage build combining Node.js (ccusage) + Python runtime
+- `docker-compose.yml`: Root-level compose file (build context: `./api`)
 
 ## Configuration
 
