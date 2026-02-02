@@ -1,6 +1,6 @@
 """Constants for Claude Usage integration."""
 
-DOMAIN = "claude_usage"
+DOMAIN = "claude_usage_tracker"
 
 # Configuration
 CONF_HOST = "host"

@@ -1,5 +1,5 @@
 {
-  "domain": "claude_usage",
+  "domain": "claude_usage_tracker",
   "name": "Claude Usage Tracker",
   "codeowners": ["@benjaminChibrac"],
   "config_flow": true,
