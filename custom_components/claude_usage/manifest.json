@@ -1,0 +1,13 @@
+{
+  "domain": "claude_usage",
+  "name": "Claude Usage Tracker",
+  "codeowners": ["@benjaminChibrac"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/benjaminChibrac/claude-usage-tracker",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/benjaminChibrac/claude-usage-tracker/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Claude Usage Tracker",
+  "content_in_root": false,
+  "filename": "claude_usage",
+  "render_readme": true,
+  "domains": ["sensor"]
+}
