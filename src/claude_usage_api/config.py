@@ -43,8 +43,9 @@ class Settings(BaseSettings):
     model_sonnet_limit: float = 17.1  # ~40% de 42.65$
     model_haiku_limit: float = 12.8  # ~30% de 42.65$
 
-    # Limite globale effective pour le calcul du %
-    weekly_limit_effective: float = 42.65
+    # Limites effectives pour le calcul du % (calibrées selon claude.ai)
+    weekly_limit_effective: float = 42.65  # Weekly: 1.29$ = 31% -> 4.16$
+    session_limit_effective: float = 4.16  # Session: avec 1.29$ utilisé et 31% affiché
 
     # Auth
     api_key: Optional[str] = None

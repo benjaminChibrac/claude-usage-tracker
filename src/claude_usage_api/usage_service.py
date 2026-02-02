@@ -153,7 +153,9 @@ async def get_session_usage() -> Tuple[SessionUsage, float]:
 
     # Session active
     used = active_block.get("costUSD", 0.0)
-    percentage = (used / session_limit * 100) if session_limit > 0 else 0.0
+    # Utiliser la limite effective pour le calcul du % (comme pour weekly)
+    session_limit_effective = settings.session_limit_effective
+    percentage = (used / session_limit_effective * 100) if session_limit_effective > 0 else 0.0
     remaining = max(0.0, session_limit - used)
 
     started_at_str = active_block.get("startTime")
@@ -162,7 +164,7 @@ async def get_session_usage() -> Tuple[SessionUsage, float]:
     # Calcul de la fin estimée (5h après le début)
     ends_at_str = None
     if started_at:
-        ends_at = started_at.replace(hour=started_at.hour + 5)
+        ends_at = started_at + timedelta(hours=5)
         ends_at_str = ends_at.isoformat()
 
     # Projection
@@ -207,11 +209,10 @@ async def get_weekly_usage() -> WeeklyUsage:
 
     try:
         # Récupérer daily ET blocks en parallèle
-        daily_task = run_ccusage_command(["daily", "--json"])
-        blocks_task = run_ccusage_command(["blocks", "--json"])
-
-        data = await daily_task
-        blocks_data = await blocks_task
+        data, blocks_data = await asyncio.gather(
+            run_ccusage_command(["daily", "--json"]),
+            run_ccusage_command(["blocks", "--json"])
+        )
     except CCUsageError:
         # Fallback: retourne des données vides
         return WeeklyUsage(
@@ -283,11 +284,10 @@ async def get_full_usage() -> UsageResponse:
     settings = get_settings()
 
     # Récupération parallèle des données
-    session_task = get_session_usage()
-    weekly_task = get_weekly_usage()
-
-    session_usage, _ = await session_task
-    weekly_usage = await weekly_task
+    (session_usage, _), weekly_usage = await asyncio.gather(
+        get_session_usage(),
+        get_weekly_usage()
+    )
 
     return UsageResponse(
         session=session_usage,
